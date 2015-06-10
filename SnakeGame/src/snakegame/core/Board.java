@@ -12,8 +12,8 @@ import snakegame.core.Snake.Direction;
 
 public class Board 
 {	
-	private int _xTiles;
-	private int _yTiles;
+	private int _boardSizeX;
+	private int _boardSizeY;
 	
 	private ArrayList<Food> _food;
 	private ArrayList<Snake> _players;
@@ -28,11 +28,12 @@ public class Board
 	
 	public Board(int sizeX, int sizeY, int numberOfPlayers)
 	{
-		_xTiles = sizeX;
-		_yTiles = sizeY;
+		System.out.println("Created board x:" + sizeX + "  y:" + sizeY);
+		_boardSizeX = sizeX;
+		_boardSizeY = sizeY;
 		
-		Snake player1 = new Snake(new Position(2, 3), Direction.RIGHT, Color.BLUE, "BlueSnake");
-		Snake player2 = new Snake(new Position(8, 8), Direction.LEFT, Color.GREEN, "GreenSnake");
+		AISnake player2 = new AISnake(new Position(2, 3), Direction.RIGHT, Color.BLUE, "BlueSnake", this);
+		AISnake player1 = new AISnake(new Position(8, 8), Direction.LEFT, Color.GREEN, "GreenSnake", this);
 		_players = new ArrayList<Snake>();
 		_players.add(player1);
 		_players.add(player2);
@@ -77,7 +78,7 @@ public class Board
 		//we should probably check so we dont generate food on top of a player (will be bad for AI)
 		if(_food.size() > 0)
 			_food.remove(0);
-		_food.add(new Food(new Position(_random.nextInt(_xTiles - 1), _random.nextInt(_yTiles - 1)), _random.nextInt(4) + 1));
+		_food.add(new Food(new Position(_random.nextInt(getBoardSizeX() - 1), _random.nextInt(getBoardSizeY() - 1)), _random.nextInt(4) + 1));
 	}
 
 	public ArrayList<Snake> getPlayers()
@@ -111,9 +112,9 @@ public class Board
 	{
 		Position headPosition = player.getBody().get(0);
 		if(headPosition.x < 0 
-				|| headPosition.x > _xTiles
+				|| headPosition.x > getBoardSizeX()
 				|| headPosition.y < 0
-				|| headPosition.y > _yTiles)
+				|| headPosition.y > getBoardSizeY())
 		{
 			System.out.println(player.getName() + "has collided with wall");
 			return true;
@@ -177,4 +178,13 @@ public class Board
 	public BoardPlayState getBoardPlayState() {
 		return _boardPlayState;
 	}
+
+	public int getBoardSizeX() {
+		return _boardSizeX;
+	}
+
+	public int getBoardSizeY() {
+		return _boardSizeY;
+	}
+
 }

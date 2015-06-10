@@ -54,7 +54,7 @@ public class Snake extends BoardEntity
 			}
 	}
 	
-	private Position getNewPosition(Position currentPos, Direction direction)
+	protected Position getNewPosition(Position currentPos, Direction direction)
 	{
 		Position newPosition;
 		switch (direction)
